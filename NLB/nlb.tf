@@ -1,6 +1,6 @@
-data "aws_instance" "SFTP-Linux" {
-  instance_id = "i-09d1211619ded0651"
-}
+# data "aws_instance" "SFTP-Linux" {
+#   instance_id = "i-09d1211619ded0651"
+# }
 
 resource "aws_lb" "SFTP-NLB" {
   name               = "SFTP-NLB-Hyd"
@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "SFTP-Linux-TG" {
 
 resource "aws_lb_target_group_attachment" "SFTP-Linux-TG-attachment" {
   target_group_arn = aws_lb_target_group.SFTP-Linux-TG.arn
-  target_id        = data.aws_instance.SFTP-Linux.id
+  target_id        = aws_instance.SFTP-Linux.id
   port             = 22
 }
 
