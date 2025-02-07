@@ -1,7 +1,7 @@
 terraform {
     backend "s3" {
       bucket = "praneeta-test-s3-copy-files"
-      key = "Terraform/ec2"
+      key = "Terraform/lambda-state-file"
       region = "ap-south-1"
     }
     required_providers {
@@ -13,7 +13,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "ap-south-2"
+  region = "ap-south-2" 
 }
 
 # provider "aws" {

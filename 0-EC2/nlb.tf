@@ -1,7 +1,3 @@
-# data "aws_instance" "SFTP-Linux" {
-#   instance_id = "i-09d1211619ded0651"
-# }
-
 resource "aws_lb" "SFTP-NLB" {
   name               = "SFTP-NLB-Hyd"
   internal           = false
