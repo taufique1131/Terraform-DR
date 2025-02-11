@@ -1,0 +1,15 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dt-prod-svc # Service Name
+   # Service Namespace
+spec:
+  selector:
+    app: dt-prod # Map the Service with the specified selected Pods
+  type: ClusterIP # Internal Service to be used by other PODs / Services only.
+  ports:
+    - name: dt-prod-port # Name of the PORT
+      port: 10014 # Service Port Number
+      targetPort: dt-prod-cp # Redirect to Application PORT
+      protocol: TCP # TCP Protocol

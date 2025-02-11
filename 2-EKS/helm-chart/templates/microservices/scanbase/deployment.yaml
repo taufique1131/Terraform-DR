@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scanb-prod-depl
+  
+  labels:
+    app: scanb-prod-depl
+spec:
+  selector:
+    matchLabels:
+      app: scanb-prod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: scanb-prod
+    spec:
+      serviceAccountName: scanb-prod-sa
+      affinity:  # Add the affinity section here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/nodegroup
+                operator: In
+                values:
+                - SystemX-Prod-Node-Group
+      containers:
+        - name: scanb-prod
+          image: "{{.Values.scanBase.image}}"
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 10012
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
+          resources:
+            requests:
+              cpu: 300m
+              memory: 1Gi
+            limits:
+              cpu: 600m
+              memory: 2Gi
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo
+          ports:
+            - containerPort: 10012
+              name: scanb-prod-cp
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /usr/share/zoneinfo
+      restartPolicy: Always

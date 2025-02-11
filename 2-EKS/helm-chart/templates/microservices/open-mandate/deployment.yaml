@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: om-prod-depl
+  
+  labels:
+    app: om-prod-depl
+spec:
+  selector:
+    matchLabels:
+      app: om-prod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: om-prod
+    spec:
+      serviceAccountName: om-prod-sa
+      affinity:  # Add the affinity section here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/nodegroup
+                operator: In
+                values:
+                - SystemX-Prod-Node-Group
+      containers:
+        - name: om-prod
+          image: "{{.Values.openMandate.image}}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 300m
+              memory: 1Gi
+            limits:
+              cpu: 600m
+              memory: 2Gi
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo
+          ports:
+            - containerPort: 10013
+              name: om-prod-cp
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /usr/share/zoneinfo
+      restartPolicy: Always

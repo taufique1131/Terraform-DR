@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crons-prod-depl
+  
+  labels:
+    app: crons-prod-depl
+spec:
+  selector:
+    matchLabels:
+      app: crons-prod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: crons-prod
+    spec:
+      serviceAccountName: crons-prod-sa
+      affinity:  # Add the affinity section here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/nodegroup
+                operator: In
+                values:
+                - SystemX-Prod-Node-Group
+      containers:
+        - name: crons-prod
+          image: "{{.Values.crons.image}}"
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 10019
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
+          resources:
+            requests:
+              cpu: 300m
+              memory: 1Gi
+            limits:
+              cpu: 500m
+              memory: 4Gi
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo
+          ports:
+            - containerPort: 10019
+              name: crons-prod-cp
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /usr/share/zoneinfo
+      restartPolicy: Always

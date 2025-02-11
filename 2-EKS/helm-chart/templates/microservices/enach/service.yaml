@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: enach-prod-svc # Service Name
+   # Service Namespace
+spec:
+  selector:
+    app: enach-prod # Map the Service with the specified selected Pods
+  type: ClusterIP # Internal Service to be used by other PODs / Services only.
+  ports:
+    - name: enach-prod-port # Name of the PORT
+      port: 10011 # Service Port Number
+      targetPort: enach-prod-cp # Redirect to Application PORT
+      protocol: TCP # TCP Protocol

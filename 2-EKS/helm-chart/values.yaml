@@ -1,0 +1,56 @@
+auth: 
+  image: "test"
+  minReplica: 1
+  maxReplica: 10
+
+crons: 
+  image: "test2"
+  minReplica: 1
+  maxReplica: 10
+
+dt: 
+  image: "test3"
+  minReplica: 1
+  maxReplica: 10
+
+enach: 
+  image: "test4"
+  minReplica: 1
+  maxReplica: 10
+
+masters: 
+  image: "test5"
+  minReplica: 1
+  maxReplica: 10
+
+openMandate: 
+  image: "test6"
+  minReplica: 1
+  maxReplica: 10
+
+payment: 
+  image: "test7"
+  minReplica: 1
+  maxReplica: 10
+
+reports: 
+  image: "test8"
+  minReplica: 1
+  maxReplica: 10
+
+scanBase: 
+  image: "test9"
+  minReplica: 1
+  maxReplica: 10
+
+sftp: 
+  image: "test10"
+  minReplica: 1
+  maxReplica: 10
+
+utilities: 
+  image: "test11"
+  minReplica: 1
+  maxReplica: 10
+
+

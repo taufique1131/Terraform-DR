@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enach-prod-depl
+  
+  labels:
+    app: enach-prod-depl
+spec:
+  selector:
+    matchLabels:
+      app: enach-prod
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: enach-prod
+    spec:
+      serviceAccountName: enach-prod-sa
+      affinity:  # Add the affinity section here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/nodegroup
+                operator: In
+                values:
+                - SystemX-Prod-Node-Group
+      containers:
+        - name: enach-prod
+          image: "{{.Values.enach.image}}"
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /
+              port: 10011
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
+          resources:
+            requests:
+              cpu: 600m
+              memory: 3Gi
+            limits:
+              cpu: 1300m
+              memory: 6Gi
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo
+          ports:
+            - containerPort: 10011
+              name: enach-prod-cp
+            - containerPort: 10029
+              name: enach-prod-web
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /usr/share/zoneinfo
+      restartPolicy: Always

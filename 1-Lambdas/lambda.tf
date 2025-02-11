@@ -15,12 +15,12 @@ variable "EnachAdoptionReports-Prod" {
     runtime = "nodejs18.x"
     handler = "src/handlers/index.systemXReportHandler"
   }
-}
+} 
+
 
 resource "aws_lambda_function" "EnachAdoptionReports-Prod" {
     filename = "${path.module}/Zip/${var.EnachAdoptionReports-Prod["name"]}.zip"
     runtime = var.EnachAdoptionReports-Prod["runtime"]
-    
     role = aws_iam_role.EnachAdoptionReports-Prod_role.arn
     handler = var.EnachAdoptionReports-Prod["handler"]
     function_name = var.EnachAdoptionReports-Prod["name"]

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftp-prod-depl
+  
+  labels:
+    app: sftp-prod-depl
+spec:
+  selector:
+    matchLabels:
+      app: sftp-prod
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sftp-prod
+    spec:
+      serviceAccountName: sftp-prod-sa
+      affinity:  # Add the affinity section here
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: eks.amazonaws.com/nodegroup
+                operator: In
+                values:
+                - SystemX-Prod-Node-Group
+      containers:
+        - name: sftp-prod
+          image: "{{.Values.sftp.image}}"
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 600m
+              memory: 2Gi
+            limits:
+              cpu: 900m
+              memory: 4Gi
+          env:
+            - name: TZ
+              value: Asia/Kolkata
+          volumeMounts:
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo
+          ports:
+            - containerPort: 10026
+              name: sftp-prod-cp
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /usr/share/zoneinfo
+      restartPolicy: Always
