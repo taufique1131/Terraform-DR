@@ -14,11 +14,13 @@ resource "aws_security_group" "NLB-SG" {
 
 resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   security_group_id = aws_security_group.NLB-SG.id
-  cidr_ipv4         = "10.2.5.27/32" # Mum Prod Bastion Priv IP
+  cidr_ipv4         = "10.2.5.27/32" # Mum OPEN VPN Priv IP
   from_port         = 2222
   ip_protocol       = "tcp"
   to_port           = 2222
 }
+
+
 
 resource "aws_vpc_security_group_ingress_rule" "allow_openvpn_ssh" {
   security_group_id = aws_security_group.NLB-SG.id

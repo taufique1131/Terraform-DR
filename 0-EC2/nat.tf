@@ -3,6 +3,10 @@ data "aws_subnet" "Public-Subnet-WEB-2a" {
   id = "subnet-002dd2296913605e1"
 }
 
+data "aws_subnet" "Public-Subnet-WEB-2b" {
+  id = "subnet-0d7ced973c82a56d3"
+}
+
 ############### Private Route tables for EC2 and EKS nodes throught NAT Gateway
 
 data "aws_route_table""PVT-APP-2a" {
