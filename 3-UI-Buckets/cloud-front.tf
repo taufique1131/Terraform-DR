@@ -56,7 +56,7 @@ resource "aws_cloudfront_distribution" "hyd_dr_distribution" {
     path_pattern     = "/content/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = local.s3_origin_id
+    target_origin_id = local.hyd_s3_origin_id
 
     forwarded_values {
       query_string = false
