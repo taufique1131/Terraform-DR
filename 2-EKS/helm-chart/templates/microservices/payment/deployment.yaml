@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: om-prod-depl
-  
+  name: payment-depl
+  namespace: "{{ .Release.Namespace }}"
   labels:
-    app: om-prod-depl
+    app: payment-depl
 spec:
   selector:
     matchLabels:
-      app: om-prod
+      app: payment
   replicas: 1
   strategy:
     rollingUpdate:
@@ -18,9 +18,9 @@ spec:
   template:
     metadata:
       labels:
-        app: om-prod
+        app: payment
     spec:
-      serviceAccountName: om-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -29,9 +29,9 @@ spec:
               - key: eks.amazonaws.com/nodegroup
                 operator: In
                 values:
-                - SystemX-Prod-Node-Group
+                - eks-nodes-dr-hyd-private-nodes
       containers:
-        - name: om-prod
+        - name: payment
           image: "{{.Values.payment.image}}"
           imagePullPolicy: IfNotPresent
           resources:
@@ -49,7 +49,7 @@ spec:
               mountPath: /usr/share/zoneinfo
           ports:
             - containerPort: 10013
-              name: om-prod-cp
+              name: payment-cp
       volumes:
         - name: tzdata
           hostPath:

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: enach-prod-depl
-  
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: enach-prod-depl
 spec:
@@ -29,7 +29,7 @@ spec:
               - key: eks.amazonaws.com/nodegroup
                 operator: In
                 values:
-                - SystemX-Prod-Node-Group
+                - eks-nodes-dr-hyd-private-nodes
       containers:
         - name: enach-prod
           image: "{{.Values.enach.image}}"
@@ -45,7 +45,7 @@ spec:
           resources:
             requests:
               cpu: 600m
-              memory: 3Gi
+              memory: 1Gi
             limits:
               cpu: 1300m
               memory: 6Gi
@@ -56,7 +56,7 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10011
+            - containerPort: 80
               name: enach-prod-cp
             - containerPort: 10029
               name: enach-prod-web

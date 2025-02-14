@@ -51,11 +51,34 @@ resource "aws_eks_cluster" "eks-cluster-dr-hyd-cluster" {
   depends_on = [aws_iam_role_policy_attachment.eks-cluster-dr-hyd-role-attachment]
 }
 
+resource "aws_eks_access_entry" "tejas" {
+  cluster_name      = aws_eks_cluster.eks-cluster-dr-hyd-cluster.name
+  principal_arn     = "arn:aws:iam::609459977430:user/Acc-AkshayP"
+  type              = "STANDARD"
+}
+
 resource "aws_eks_access_policy_association" "tejas" {
   cluster_name  = aws_eks_cluster.eks-cluster-dr-hyd-cluster.name
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSViewPolicy"
-  principal_arn = "arn:aws:iam::609459977430:user/ACC-Tejas"
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
+  principal_arn = "arn:aws:iam::609459977430:user/Acc-AkshayP"
   access_scope {
     type       = "cluster"
   }
+  depends_on = [ aws_eks_access_entry.tejas ]
+}
+
+resource "aws_eks_access_entry" "jump-server" {
+  cluster_name      = aws_eks_cluster.eks-cluster-dr-hyd-cluster.name
+  principal_arn     = "arn:aws:iam::609459977430:role/SystemX-Prod-Bastion_Role"
+  type              = "STANDARD"
+}
+
+resource "aws_eks_access_policy_association" "jump-server" {
+  cluster_name  = aws_eks_cluster.eks-cluster-dr-hyd-cluster.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminViewPolicy"
+  principal_arn = "arn:aws:iam::609459977430:role/SystemX-Prod-Bastion_Role"
+  access_scope {
+    type       = "cluster"
+  }
+  depends_on = [ aws_eks_access_entry.jump-server ]
 }

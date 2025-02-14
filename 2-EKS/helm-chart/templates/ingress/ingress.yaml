@@ -1,0 +1,167 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: systemx-prod-hyd-dr-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/load-balancer-name: systemx-prod-api-hyd-dr-ingress
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/subnets: subnet-0faa9e5cc4c63ce4b , subnet-0d12d13c2263e89e3 , subnet-0ded724ce358afba8
+    alb.ingress.kubernetes.io/security-groups: sg-0be33543882e08815
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+      #alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    # alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    # alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    # alb.ingress.kubernetes.io/ssl-redirect: "443"
+    # alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:609459977430:certificate/1df1e001-af97-49e1-bcc3-0af18660ffb7
+    alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=600
+    # alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=systemx-microservices-logs,access_logs.s3.prefix=SystemX-ALB/systemx-prod-api-alb
+    alb.ingress.kubernetes.io/tags: "application=SystemX-Prod-DR,owner=ACC,env=Prod-DR"
+spec:
+  #ingressClassName: "alb"
+  rules:
+    - http:
+        paths:
+            # - path: /api
+            # pathType: Prefix
+            # backend:
+            #     service:
+            #     name: enach-prod-svc
+            #     port:
+            #         number: 10011
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: enach-prod-svc
+                  port:
+                    number: 80
+
+            # - path: /tech_process_v2
+            #   pathType: Prefix
+            #   backend:
+            #     service:
+            #       name: enach-prod-svc
+            #       port:
+            #         number: 10011
+            - path: /api/master
+              pathType: Prefix
+              backend:
+                service:
+                  name: masters-prod-svc
+                  port:
+                    number: 10016
+            - path: /api/login
+              pathType: Prefix
+              backend:
+                service:
+                  name: auth-prod-svc
+                  port:
+                    number: 10010
+            - path: /api/iotoken
+              pathType: Prefix
+              backend:
+                service:
+                  name: auth-prod-svc
+                  port:
+                    number: 10010
+            - path: /api/apiuserkey
+              pathType: Prefix
+              backend:
+                service:
+                  name: auth-prod-svc
+                  port:
+                    number: 10010
+            - path: /api/jwtverify
+              pathType: Prefix
+              backend:
+                service:
+                  name: auth-prod-svc
+                  port:
+                    number: 10010
+            - path: /DebitTransaction
+              pathType: Prefix
+              backend:
+                service:
+                  name: dt-prod-svc
+                  port:
+                    number: 10014
+            - path: /api/commonUtility
+              pathType: Prefix
+              backend:
+                service:
+                  name: utility-prod-svc
+                  port:
+                    number: 10022
+            - path: /api/payment
+              pathType: Prefix
+              backend:
+                service:
+                  name: payment-prod-svc
+                  port:
+                    number: 10023
+            - path: /reports
+              pathType: Prefix
+              backend:
+                service:
+                  name: reports-prod-svc
+                  port:
+                    number: 10018
+            - path: /api/cron
+              pathType: Prefix
+              backend:
+                service:
+                  name: crons-prod-svc
+                  port:
+                    number: 10019
+            - path: /api/holdCasesSMS
+              pathType: Prefix
+              backend:
+                service:
+                  name: crons-prod-svc
+                  port:
+                    number: 10019
+            - path: /api/open_mandate
+              pathType: Prefix
+              backend:
+                service:
+                  name: om-prod-svc
+                  port:
+                    number: 10013
+            - path: /api/idam
+              pathType: Prefix
+              backend:
+                service:
+                  name: auth-prod-svc
+                  port:
+                    number: 10010
+            - path: /api/scanBaseCrons
+              pathType: Prefix
+              backend:
+                service:
+                  name: scanb-prod-svc
+                  port:
+                    number: 10012
+            - path: /api/uploadSftp
+              pathType: Prefix
+              backend:
+                service:
+                  name: scanb-prod-svc
+                  port:
+                    number: 10012
+            - path: /sftp-payment
+              pathType: Prefix
+              backend:
+                service:
+                  name: sftp-prod-svc
+                  port:
+                    number: 10026
+            - path: /ws
+              pathType: Prefix
+              backend:
+                service:
+                  name: websocket-prod-svc
+                  port:
+                    number: 10029

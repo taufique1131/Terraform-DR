@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: masters-prod-sa # SA Name
-   # SA Namespace
+  namespace: "{{ .Release.Namespace }}" # SA Namespace

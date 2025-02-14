@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: om-prod-depl
-  
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: om-prod-depl
 spec:
@@ -29,7 +29,7 @@ spec:
               - key: eks.amazonaws.com/nodegroup
                 operator: In
                 values:
-                - SystemX-Prod-Node-Group
+                - eks-nodes-dr-hyd-private-nodes
       containers:
         - name: om-prod
           image: "{{.Values.openMandate.image}}"

@@ -1,56 +1,90 @@
 auth: 
-  image: "test"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 crons: 
-  image: "test2"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
+  requests: 
+    cpu:
+    memory:
+    
 
 dt: 
-  image: "test3"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 enach: 
-  image: "test4"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 masters: 
-  image: "test5"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 openMandate: 
-  image: "test6"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 payment: 
-  image: "test7"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 reports: 
-  image: "test8"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 scanBase: 
-  image: "test9"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 sftp: 
-  image: "test10"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 utilities: 
-  image: "test11"
+  image: "nginx:latest"
   minReplica: 1
   maxReplica: 10
-
+  requests: 
+    cpu:
+    memory:
+    
 

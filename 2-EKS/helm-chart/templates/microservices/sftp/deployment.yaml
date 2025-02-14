@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sftp-prod-depl
-  
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app: sftp-prod-depl
 spec:
@@ -29,7 +29,7 @@ spec:
               - key: eks.amazonaws.com/nodegroup
                 operator: In
                 values:
-                - SystemX-Prod-Node-Group
+                - eks-nodes-dr-hyd-private-nodes
       containers:
         - name: sftp-prod
           image: "{{.Values.sftp.image}}"
@@ -37,7 +37,7 @@ spec:
           resources:
             requests:
               cpu: 600m
-              memory: 2Gi
+              memory: 1Gi
             limits:
               cpu: 900m
               memory: 4Gi
