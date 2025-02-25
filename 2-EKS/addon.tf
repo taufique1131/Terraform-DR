@@ -96,3 +96,4 @@ resource "aws_eks_addon" "metrics-server" {
   addon_name    = "metrics-server"
   addon_version = data.aws_eks_addon_version.metrics-server.version
 }
+

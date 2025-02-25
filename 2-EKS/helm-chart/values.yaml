@@ -16,7 +16,7 @@ crons:
     
 
 dt: 
-  image: "nginx:latest"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-dt:DR0.2"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -48,12 +48,14 @@ openMandate:
     memory:
     
 payment: 
-  image: "nginx:latest"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-payment:DR0.4"
   minReplica: 1
   maxReplica: 10
+  saRoleARN: "arn:aws:iam::609459977430:role/hyd-dr-eks-payment-sa-role"
   requests: 
     cpu:
     memory:
+
     
 reports: 
   image: "nginx:latest"
@@ -64,7 +66,7 @@ reports:
     memory:
     
 scanBase: 
-  image: "nginx:latest"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-scanbase:DR0.3"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -72,7 +74,7 @@ scanBase:
     memory:
     
 sftp: 
-  image: "nginx:latest"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-sftp:DR0.1"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -80,11 +82,11 @@ sftp:
     memory:
     
 utilities: 
-  image: "nginx:latest"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-utilities:DR0.1"
   minReplica: 1
   maxReplica: 10
   requests: 
     cpu:
     memory:
-    
+
 

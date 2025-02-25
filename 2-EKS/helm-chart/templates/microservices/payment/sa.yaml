@@ -3,3 +3,5 @@ kind: ServiceAccount
 metadata:
   name: payment-sa # SA Name
   namespace: "{{ .Release.Namespace }}" # SA Namespace
+  annotations:
+    eks.amazonaws.com/role-arn: {{ .Values.payment.saRoleARN }}

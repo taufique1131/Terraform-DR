@@ -33,6 +33,13 @@ resource "aws_iam_role_policy_attachment" "eks-nodes-dr-hyd-container-registry-r
   role       = aws_iam_role.eks-nodes-dr-hyd-role.name
 }
 
+# arn:aws:iam::609459977430:policy/SystemX-Secreate_Manager
+
+# resource "aws_iam_role_policy_attachment" "eks-nodes-dr-hyd-get-secret" {
+#   policy_arn = "arn:aws:iam::609459977430:policy/SystemX-Secreate_Manager"
+#   role       = aws_iam_role.eks-nodes-dr-hyd-role.name
+# }
+
 resource "aws_eks_node_group" "eks-nodes-dr-hyd-private-nodes" {
   cluster_name    = aws_eks_cluster.eks-cluster-dr-hyd-cluster.name
   version         = var.eks_kubernetes_version

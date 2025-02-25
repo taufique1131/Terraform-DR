@@ -20,7 +20,7 @@ spec:
       labels:
         app: scanb-prod
     spec:
-      serviceAccountName: scanb-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

@@ -20,7 +20,7 @@ spec:
       labels:
         app: sftp-prod
     spec:
-      serviceAccountName: sftp-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
