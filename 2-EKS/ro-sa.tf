@@ -21,8 +21,13 @@ resource "aws_iam_role" "payment-sa-role" {
   name               = "hyd-dr-eks-payment-sa-role"
 }
 
-resource "aws_iam_role_policy_attachment" "payment-sa-role" {
+resource "aws_iam_role_policy_attachment" "payment-sa-secretmanager" {
   policy_arn = "arn:aws:iam::609459977430:policy/SystemX-Secreate_Manager"
+  role       = aws_iam_role.payment-sa-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "payment-sa-s3" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
   role       = aws_iam_role.payment-sa-role.name
 }
 

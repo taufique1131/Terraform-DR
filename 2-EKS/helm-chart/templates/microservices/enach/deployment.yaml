@@ -20,7 +20,7 @@ spec:
       labels:
         app: enach-prod
     spec:
-      serviceAccountName: enach-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

@@ -20,7 +20,7 @@ spec:
       labels:
         app: masters-prod
     spec:
-      serviceAccountName: masters-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
