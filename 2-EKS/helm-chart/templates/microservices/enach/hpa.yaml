@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: enach-prod-hpa # HPA Name
+  name: enach-hpa # HPA Name
   namespace: "{{ .Release.Namespace }}" # HPA Namespace
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: enach-prod-depl # Deployment Name to Scale the Selected Deployment
+    name: enach-depl # Deployment Name to Scale the Selected Deployment
   minReplicas: {{.Values.enach.minReplica}} # Min. Number of Replicas
   maxReplicas: {{.Values.enach.maxReplica}} # Max. Number of Replicas
   behavior:

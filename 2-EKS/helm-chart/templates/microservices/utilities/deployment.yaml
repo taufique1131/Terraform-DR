@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: utility-prod-depl
+  name: utility-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: utility-prod-depl
+    app: utility-depl
 spec:
   selector:
     matchLabels:
@@ -48,8 +48,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10022
-              name: utility-prod-cp
+            - containerPort: 10000
+              name: utility-cp
       volumes:
         - name: tzdata
           hostPath:

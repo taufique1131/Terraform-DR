@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-prod-depl
+  name: auth-depl
   namespace: "{{ .Release.Namespace }}"
 labels:
-    app: auth-prod-depl
+    app: auth-depl
 spec:
   selector:
     matchLabels:
@@ -20,7 +20,7 @@ spec:
       labels:
         app: auth-prod
     spec:
-      serviceAccountName: auth-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -48,8 +48,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10010
-              name: auth-prod-cp
+            - containerPort: 10000
+              name: auth-cp
       volumes:
         - name: tzdata
           hostPath:

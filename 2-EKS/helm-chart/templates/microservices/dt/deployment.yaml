@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dt-prod-depl
+  name: dt-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: dt-prod-depl
+    app: dt-depl
 spec:
   selector:
     matchLabels:
@@ -37,8 +37,8 @@ spec:
           livenessProbe:
             failureThreshold: 5
             httpGet:
-              path: /
-              port: 10014
+              path: /healthCheck
+              port: 10000
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 7
@@ -56,8 +56,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10014
-              name: dt-prod-cp
+            - containerPort: 10000
+              name: dt-cp
       volumes:
         - name: tzdata
           hostPath:

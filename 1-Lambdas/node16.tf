@@ -96,6 +96,27 @@ resource "aws_iam_role_policy_attachment" "splitting-demerge-file_attachment" {
  policy_arn  = aws_iam_policy.splitting-demerge-file_policy.arn
 }
 
+# Lambda permission to allow S3 to invoke the function
+resource "aws_lambda_permission" "s3_invocation" {
+  statement_id  = "AllowS3Invoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.splitting-demerge-file.function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = "arn:aws:s3:::${var.s3_bucket_name}"
+}
+
+# Create the S3 bucket notification to trigger the Lambda function for .csv files in csvdata/ prefix
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = var.s3_bucket_name
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.splitting-demerge-file.arn
+    events              = ["s3:ObjectCreated:*"]
+
+    filter_prefix = prefix
+    filter_suffix = suffix
+  }
+
 # #############################################################
 #############################################################
 ########################ScanbaseRegistrationCrons-Prod

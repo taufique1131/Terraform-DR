@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: sftp-prod-hpa # HPA Name
+  name: sftp-hpa # HPA Name
   namespace: "{{ .Release.Namespace }}" # HPA Namespace
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: sftp-prod-depl # Deployment Name to Scale the Selected Deployment
+    name: sftp-depl # Deployment Name to Scale the Selected Deployment
   minReplicas: {{.Values.sftp.minReplica}} # Min. Number of Replicas
   maxReplicas: {{.Values.sftp.maxReplica}} # Max. Number of Replicas
   behavior:

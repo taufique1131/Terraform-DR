@@ -48,7 +48,7 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10013
+            - containerPort: 10000
               name: payment-cp
       volumes:
         - name: tzdata

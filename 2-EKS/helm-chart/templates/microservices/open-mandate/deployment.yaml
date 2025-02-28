@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: om-prod-depl
+  name: om-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: om-prod-depl
+    app: om-depl
 spec:
   selector:
     matchLabels:
@@ -20,7 +20,7 @@ spec:
       labels:
         app: om-prod
     spec:
-      serviceAccountName: om-prod-sa
+      serviceAccountName: payment-sa
       affinity:  # Add the affinity section here
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -48,8 +48,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10013
-              name: om-prod-cp
+            - containerPort: 10000
+              name: om-cp
       volumes:
         - name: tzdata
           hostPath:

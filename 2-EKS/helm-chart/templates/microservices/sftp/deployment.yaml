@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sftp-prod-depl
+  name: sftp-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: sftp-prod-depl
+    app: sftp-depl
 spec:
   selector:
     matchLabels:
@@ -48,8 +48,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10026
-              name: sftp-prod-cp
+            - containerPort: 10000
+              name: sftp-cp
       volumes:
         - name: tzdata
           hostPath:

@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: scanb-prod-hpa # HPA Name
+  name: scanb-hpa # HPA Name
   namespace: "{{ .Release.Namespace }}" # HPA Namespace
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: scanb-prod-depl # Deployment Name to Scale the Selected Deployment
+    name: scanb-depl # Deployment Name to Scale the Selected Deployment
   minReplicas: {{.Values.scanBase.minReplica}} # Min. Number of Replicas
   maxReplicas: {{.Values.scanBase.maxReplica}} # Max. Number of Replicas
   behavior:

@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: masters-prod-depl
+  name: masters-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: masters-prod-depl
+    app: masters-depl
 spec:
   selector:
     matchLabels:
@@ -48,8 +48,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10016
-              name: masters-prod-cp
+            - containerPort: 10000
+              name: masters-cp
       volumes:
         - name: tzdata
           hostPath:

@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: crons-prod-svc # Service Name
+  name: crons-svc # Service Name
   namespace: "{{ .Release.Namespace }}" # Service Namespace
 spec:
   selector:
     app: crons-prod # Map the Service with the specified selected Pods
   type: ClusterIP # Internal Service to be used by other PODs / Services only.
   ports:
-    - name: crons-prod-port # Name of the PORT
-      port: 10019 # Service Port Number
-      targetPort: crons-prod-cp # Redirect to Application PORT
+    - name: crons-port # Name of the PORT
+      port: 10000 # Service Port Number
+      targetPort: crons-cp # Redirect to Application PORT
       protocol: TCP # TCP Protocol

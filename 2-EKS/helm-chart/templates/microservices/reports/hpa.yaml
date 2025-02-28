@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: reports-prod-hpa # HPA Name
+  name: reports-hpa # HPA Name
   namespace: "{{ .Release.Namespace }}" # HPA Namespace
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: reports-prod-depl # Deployment Name to Scale the Selected Deployment
+    name: reports-depl # Deployment Name to Scale the Selected Deployment
   minReplicas: {{.Values.reports.minReplica}} # Min. Number of Replicas
   maxReplicas: {{.Values.reports.maxReplica}} # Max. Number of Replicas
   behavior:

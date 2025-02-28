@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: auth-prod-hpa # HPA Name
+  name: auth-hpa # HPA Name
   namespace: "{{ .Release.Namespace }}"
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: auth-prod-depl # Deployment Name to Scale the Selected Deployment
+    name: auth-depl # Deployment Name to Scale the Selected Deployment
   minReplicas: {{.Values.auth.minReplica}} # Min. Number of Replicas
   maxReplicas: {{.Values.auth.maxReplica}} # Max. Number of Replicas
   behavior:

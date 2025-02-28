@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: enach-prod-depl
+  name: enach-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: enach-prod-depl
+    app: enach-depl
 spec:
   selector:
     matchLabels:
@@ -37,8 +37,8 @@ spec:
           livenessProbe:
             failureThreshold: 5
             httpGet:
-              path: /
-              port: 10011
+              path: /healthCheck
+              port: 10000
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 7
@@ -56,10 +56,10 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 80
-              name: enach-prod-cp
-            - containerPort: 10029
-              name: enach-prod-web
+            - containerPort: 10000
+              name: enach-cp
+            - containerPort: 10000
+              name: enach-web
       volumes:
         - name: tzdata
           hostPath:

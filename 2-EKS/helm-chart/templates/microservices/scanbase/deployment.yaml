@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scanb-prod-depl
+  name: scanb-depl
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: scanb-prod-depl
+    app: scanb-depl
 spec:
   selector:
     matchLabels:
@@ -37,8 +37,8 @@ spec:
           livenessProbe:
             failureThreshold: 5
             httpGet:
-              path: /
-              port: 10012
+              path: /healthCheck
+              port: 10000
             initialDelaySeconds: 60
             periodSeconds: 15
             timeoutSeconds: 7
@@ -56,8 +56,8 @@ spec:
             - name: tzdata
               mountPath: /usr/share/zoneinfo
           ports:
-            - containerPort: 10012
-              name: scanb-prod-cp
+            - containerPort: 10000
+              name: scanb-cp
       volumes:
         - name: tzdata
           hostPath:
