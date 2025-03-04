@@ -5,7 +5,7 @@ metadata:
   namespace: "{{ .Release.Namespace }}" # Service Namespace
 spec:
   selector:
-    app: payment-prod # Map the Service with the specified selected Pods
+    app: payment # Map the Service with the specified selected Pods
   type: ClusterIP # Internal Service to be used by other PODs / Services only.
   ports:
     - name: payment-port # Name of the PORT

@@ -34,6 +34,22 @@ spec:
         - name: payment
           image: "{{.Values.payment.image}}"
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthCheck
+              port: 10023
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: /healthCheck
+              port: 10023
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
           resources:
             requests:
               cpu: 300m

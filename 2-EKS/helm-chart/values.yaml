@@ -1,5 +1,5 @@
 auth: 
-  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-auth:DR0.3"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-auth:DR0.6"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -7,7 +7,7 @@ auth:
     memory:
     
 crons: 
-  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-crons:DR0.2"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-crons:DR0.4"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -24,7 +24,7 @@ dt:
     memory:
     
 enach: 
-  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-enach:DR0.2"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-enach:DR0.5"
   minReplica: 1
   maxReplica: 10
   requests: 
@@ -66,7 +66,7 @@ reports:
     memory:
     
 scanBase: 
-  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-scanbase:DR0.4"
+  image: "609459977430.dkr.ecr.ap-south-2.amazonaws.com/sx-api-scanbase:DR0.6"
   minReplica: 1
   maxReplica: 10
   requests: 
