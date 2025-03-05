@@ -14,7 +14,7 @@ variable "CronLambdaInvocation-Prod" {
   })
   default = {
     name = "CronLambdaInvocation-Prod"
-    runtime = "Nodejs16.x"
+    runtime = "nodejs16.x"
     handler = "lambda_function.lambda_handler"
   }
 } 
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "CronLambdaInvocation-Prod" {
     function_name = var.CronLambdaInvocation-Prod["name"]
     depends_on   = [aws_iam_role_policy_attachment.CronLambdaInvocation-Prod_attachment]
     memory_size = 128
-    timeout = 903
+    timeout = 30
     vpc_config {
       subnet_ids = [data.aws_subnet.PVT-APP-2b.id , data.aws_subnet.PVT-APP-2c.id]
       security_group_ids = [aws_security_group.Lambda-SG.id]
@@ -95,7 +95,7 @@ resource "aws_iam_policy" "CronLambdaInvocation-Prod" {
  
 resource "aws_iam_role_policy_attachment" "CronLambdaInvocation-Prod_attachment" {
  role        = aws_iam_role.CronLambdaInvocation-Prod_role.name
- policy_arn  = aws_iam_policy.DT_sent_to_bank_report-Prod-Prod.arn
+ policy_arn  = aws_iam_policy.CronLambdaInvocation-Prod.arn
 }
 
 # ################################################
@@ -116,7 +116,7 @@ resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-1" {
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-1" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-1"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -141,7 +141,7 @@ resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-2" {
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-2" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-2"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -166,82 +166,57 @@ resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-3" {
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-3" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-3"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
   source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-3.arn
 }
 
-# ################################################
-# ###### MicroService_Prod_Nupay_Transaction_Status
-# ################################################
+# # ################################################
+# # ###### MicroService_Prod_Nupay_Transaction_Status
+# # ################################################
 
-resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-4" {
-  name = "MicroService_Prod_Nupay_Transaction_Status"
-  schedule_expression = "rate(60 minutes)"
-}
+# resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-4" {
+#   name = "MicroService_Prod_Nupay_Transaction_Status"
+#   schedule_expression = "rate(60 minutes)"
+# }
 
-resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-4" {
-  arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
-  rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.name
-  input = jsonencode({
-  "name": "NUPAY_TRANSACTION_STATUS"
-})
-}
+# resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-4" {
+#   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
+#   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.name
+#   input = jsonencode({
+#   "name": "NUPAY_TRANSACTION_STATUS"
+# })
+# }
 
-resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-4" {
-  statement_id = "AllowExecutionFromCloudWatch"
-  action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
-  principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.arn
-}
+# resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-4" {
+#   statement_id = "AllowExecutionFromCloudWatch-4"
+#   action = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
+#   principal = "events.amazonaws.com"
+#   source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.arn
+# }
 
 # ################################################
 # ###### MicroService_Prod_Bitly_SMS_Status
 # ################################################
 
-resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-4" {
+resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-5" {
   name = "MicroService_Prod_Bitly_SMS_Status"
   schedule_expression = "rate(45 minutes)"
-}
-
-resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-4" {
-  arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
-  rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.name
-  input = jsonencode({
-  "name": "BITLY_USAGE_LIMIT"
-})
-}
-
-resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-4" {
-  statement_id = "AllowExecutionFromCloudWatch"
-  action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
-  principal = "events.amazonaws.com"
-  source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-4.arn
-}
-
-# ################################################
-# ###### SFDC_API_LOS_UPDATE_PROD
-# ################################################
-
-resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-5" {
-  name = "SFDC_API_LOS_UPDATE_PROD"
-  schedule_expression = "cron(30 13 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-5" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-5.name
   input = jsonencode({
-  "name": "SFDC_API_LOS_UPDATE"
+  "name": "BITLY_USAGE_LIMIT"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-5" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-5"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -249,24 +224,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### Open_mandate_Limit_transfer_Prod
+# ###### SFDC_API_LOS_UPDATE_PROD
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-6" {
-  name = "Open_mandate_Limit_transfer_Prod"
-  schedule_expression = "cron(00 19 * * ? *)"
+  name = "SFDC_API_LOS_UPDATE_PROD"
+  schedule_expression = "cron(30 13 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-6" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-6.name
   input = jsonencode({
-  "name": "OPEN_MANDATE_LIMIT_TRANSFER"
+  "name": "SFDC_API_LOS_UPDATE"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-6" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-6"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -274,24 +249,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### ACCOUNT_VALIDATION_BENE_UPDATE-Prod
+# ###### Open_mandate_Limit_transfer_Prod
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-7" {
-  name = "ACCOUNT_VALIDATION_BENE_UPDATE-Prod"
-  schedule_expression = "rate(10 minutes)"
+  name = "Open_mandate_Limit_transfer_Prod"
+  schedule_expression = "cron(00 19 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-7" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-7.name
   input = jsonencode({
-  "name": "ACCOUNT_VALIDATION_BENE_UPDATE"
+  "name": "OPEN_MANDATE_LIMIT_TRANSFER"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-7" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-7"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -299,24 +274,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### MicroService_UMRN_MISMATCH
+# ###### ACCOUNT_VALIDATION_BENE_UPDATE-Prod
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-8" {
-  name = "MicroService_UMRN_MISMATCH"
-  schedule_expression = "rate(45 minutes)"
+  name = "ACCOUNT_VALIDATION_BENE_UPDATE-Prod"
+  schedule_expression = "rate(10 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-8" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-8.name
   input = jsonencode({
-  "name": "MISMATCH_UMRN"
+  "name": "ACCOUNT_VALIDATION_BENE_UPDATE"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-8" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-8"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -324,24 +299,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### MicroService_AutoAmountReductionCounter_Prod
+# ###### MicroService_UMRN_MISMATCH
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-9" {
-  name = "MicroService_AutoAmountReductionCounter_Prod"
-  schedule_expression = "cron(15 19 * * ? *)"
+  name = "MicroService_UMRN_MISMATCH"
+  schedule_expression = "rate(45 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-9" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-9.name
   input = jsonencode({
-  "name": "MAX_AMOUNT_DEDUCTION"
+  "name": "MISMATCH_UMRN"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-9" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-9"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -349,24 +324,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### RETRY_ENQUIRY_ICICI_FAILURE_CASES_Prod
+# ###### MicroService_AutoAmountReductionCounter_Prod
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-10" {
-  name = "RETRY_ENQUIRY_ICICI_FAILURE_CASES_Prod"
-  schedule_expression = "rate(3 minutes)"
+  name = "MicroService_AutoAmountReductionCounter_Prod"
+  schedule_expression = "cron(15 19 * * ? *)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-10" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-10.name
   input = jsonencode({
-  "name": "RETRY_ICICI_FAILURE_CASES"
+  "name": "MAX_AMOUNT_DEDUCTION"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-10" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-10"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -374,24 +349,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### ICICI_OLDER_CASES_MARK_PROD
+# ###### RETRY_ENQUIRY_ICICI_FAILURE_CASES_Prod
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-11" {
-  name = "ICICI_OLDER_CASES_MARK_PROD"
-  schedule_expression = "rate(60 minutes)"
+  name = "RETRY_ENQUIRY_ICICI_FAILURE_CASES_Prod"
+  schedule_expression = "rate(3 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-11" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-11.name
   input = jsonencode({
-  "name": "ICICI_OLDER_CASES_MARK"
+  "name": "RETRY_ICICI_FAILURE_CASES"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-11" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-11"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -399,24 +374,24 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### LENDINGKART_UTR_CALLBACK-Prod
+# ###### ICICI_OLDER_CASES_MARK_PROD
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-12" {
-  name = "LENDINGKART_UTR_CALLBACK-Prod"
-  schedule_expression = "rate(10 minutes)"
+  name = "ICICI_OLDER_CASES_MARK_PROD"
+  schedule_expression = "rate(60 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-12" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-12.name
   input = jsonencode({
-  "name": "LENDINGKART_UTR"
+  "name": "ICICI_OLDER_CASES_MARK"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-12" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-12"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
@@ -424,26 +399,51 @@ resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambd
 }
 
 # ################################################
-# ###### UTR_UPDATE_FINNONE_END_PROD
+# ###### LENDINGKART_UTR_CALLBACK-Prod
 # ################################################
 
 resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-13" {
-  name = "UTR_UPDATE_FINNONE_END_PROD"
-  schedule_expression = "rate(15 minutes)"
+  name = "LENDINGKART_UTR_CALLBACK-Prod"
+  schedule_expression = "rate(10 minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-13" {
   arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
   rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-13.name
   input = jsonencode({
-  "name": "UTR_UPDATE_FINNONE_END"
+  "name": "LENDINGKART_UTR"
 })
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-13" {
-  statement_id = "AllowExecutionFromCloudWatch"
+  statement_id = "AllowExecutionFromCloudWatch-13"
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
   principal = "events.amazonaws.com"
   source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-13.arn
+}
+
+# ################################################
+# ###### UTR_UPDATE_FINNONE_END_PROD
+# ################################################
+
+resource "aws_cloudwatch_event_rule" "CronLambdaInvocation-rule-14" {
+  name = "UTR_UPDATE_FINNONE_END_PROD"
+  schedule_expression = "rate(15 minutes)"
+}
+
+resource "aws_cloudwatch_event_target" "CronLambdaInvocation_target-14" {
+  arn = aws_lambda_function.CronLambdaInvocation-Prod.arn
+  rule = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-14.name
+  input = jsonencode({
+  "name": "UTR_UPDATE_FINNONE_END"
+})
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_CronLambdaInvocation_lambda-14" {
+  statement_id = "AllowExecutionFromCloudWatch-14"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.CronLambdaInvocation-Prod.function_name
+  principal = "events.amazonaws.com"
+  source_arn = aws_cloudwatch_event_rule.CronLambdaInvocation-rule-14.arn
 }
